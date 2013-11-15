@@ -9,7 +9,7 @@
  * @package   PHPCrypt
  * @author    Bryan C. Geraghty <bryan@ravensight.org>
  * @copyright 2013 Bryan C. Geraghty
- * @license   http://www.gnu.org/licenses/lgpl-3.0.txt GNU LGPL
+ * @license   https://github.com/archwisp/PHPCrypt/blob/master/LICENSE MIT
  * @link      https://github.com/archwisp/PHPCrypt
  */
 

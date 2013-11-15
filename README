@@ -92,6 +92,20 @@ generate an encryption key with the following command:
     
     This will produce the value, 'Foobar'.
 
+Unit Tests
+==========
+In order to run the unit tests included with the library, you must have
+PHP 5.4 installed (Sorry, it's a PHPUnit requirement). To install all of
+the unit test support libraries, simply change into the library's root and
+enter the following command:
+
+    ./bin/composer.phar install
+
+Once composer has finished doing its thing, issue the folowing command to
+run the tests:
+
+    ./bin/runtests
+
 That's it!
 ==========
 I this is better than what we have now.
