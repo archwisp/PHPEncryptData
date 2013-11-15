@@ -27,4 +27,4 @@ fi
 
 echo "Testing: $REALPATH $FILTER";
 
-PHPCrypt/vendor/bin/phpunit -c PHPCrypt/phpunit.xml.dist $FILTER $REALPATH;
+PHPCrypt/bin/phpunit -c PHPCrypt/phpunit.xml.dist $FILTER $REALPATH;
