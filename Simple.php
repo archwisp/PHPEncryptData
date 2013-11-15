@@ -129,8 +129,6 @@ class Simple
         }
         
         /* \x00 if equal, nonzero otherwise */
-        $return = ($result === "\x00") ? true : false;
-        
-        return $return;
+        return ($result === "\x00");
     }
 }
