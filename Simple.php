@@ -89,26 +89,26 @@ class Simple
     }
 
     private function padWithPkcs7($plaintext) {
-        $block_size = $this->getBlockSize();
+        $blockSize = $this->getBlockSize();
 
-        if ($block_size < 256) {
+        if ($blockSize > 255) {
             throw new \RuntimeException('PKCS7 padding is only well defined for block sizes smaller than 256 bits');
         }
 
-        $pad_length = ($block_size - (strlen($plaintext) % $block_size));
+        $padLength = ($blockSize - (strlen($plaintext) % $blockSize));
 
-        return $plaintext . str_repeat(chr($pad_length), $pad_length);
+        return $plaintext . str_repeat(chr($padLength), $padLength);
     }
 
     private function trimPkcs7($plaintext) {
-        $pad_char = substr($plaintext, -1);
-        $pad_length = ord($pad_char);
+        $padChar = substr($plaintext, -1);
+        $padLength = ord($padChar);
 
-        if (substr($plaintext, -$pad_length) !== str_repeat($pad_char, $pad_length)) {
+        if (substr($plaintext, -$padLength) !== str_repeat($padChar, $padLength)) {
             throw new \RuntimeException('Invalid pad value');
         }
 
-        return substr($plaintext, 0, -$pad_length);
+        return substr($plaintext, 0, -$padLength);
     }
 
     /**
