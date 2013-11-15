@@ -43,9 +43,7 @@ class Simple
 
         $signature = hash_hmac($this->_macAlgorithm, $ciphertext, $this->_macKey, true);
 
-        $output = base64_encode($ciphertext) . '|' . base64_encode($signature);
-
-        return $output; 
+        return base64_encode($ciphertext) . '|' . base64_encode($signature);
     }
 
     public function decrypt($signedCiphertext) {
