@@ -61,8 +61,6 @@ class Simple
             $decodedCiphertext, $this->_macKey, true
         );
 
-        // This should really be a constant-time comparison to prevent timing
-        // attacks (see http://blog.jasonmooberry.com/2010/10/constant-time-string-comparison/)
         if (!$this->_compareMac($signature, base64_decode($signedCiphertextParts[1]))) {
             Throw new \RuntimeException('Invalid signature');
         }

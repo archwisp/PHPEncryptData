@@ -38,6 +38,7 @@ The cryptographic primitives & practices behind this library are:
 * HMAC-SHA-256
 * Encrypt-Then-MAC construction
 * Constant-time MAC comparison
+* Uses /dev/urandom as its PRNG
 
 Example
 =======
