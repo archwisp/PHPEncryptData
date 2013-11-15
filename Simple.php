@@ -92,7 +92,7 @@ class Simple
         $block_size = $this->getBlockSize();
 
         if ($block_size > 255) {
-            throw new RuntimeException('PKCS7 padding is only well defined for block sizes smaller than 256 bits');
+            throw new \RuntimeException('PKCS7 padding is only well defined for block sizes smaller than 256 bits');
         }
 
         $pad_length = ($block_size - (strlen($plaintext) % $block_size));
