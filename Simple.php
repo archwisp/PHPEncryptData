@@ -51,8 +51,8 @@ class Simple
     public function decrypt($signedCiphertext) {
         $signedCiphertextParts = explode('|', $signedCiphertext);
 
-        If (count($signedCiphertextParts) !== 2) {
-            Throw new \RuntimeException('Invalid signature');
+        if (count($signedCiphertextParts) !== 2) {
+            throw new \RuntimeException('Invalid signature');
         }
 
         $decodedCiphertext = base64_decode($signedCiphertextParts[0]);
@@ -62,7 +62,7 @@ class Simple
         );
 
         if (!$this->_compareMac($signature, base64_decode($signedCiphertextParts[1]))) {
-            Throw new \RuntimeException('Invalid signature');
+            throw new \RuntimeException('Invalid signature');
         }
 
         $iv = substr($decodedCiphertext, 0, $this->getBlockSize());
