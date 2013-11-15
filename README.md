@@ -44,7 +44,8 @@ The cryptographic primitives & practices behind this library are:
 
 Every bit of review and feedback you're willing to provide is appreciated.
 If you see a major bug, efficiency improvement, or design decision that can 
-be improved in a concrete way, please submit an issue.
+be improved in a concrete way, please submit an issue. Simple.php is where
+everything happens and SimpleTest.php contains the unit tests.
 
 Thank you!
 
