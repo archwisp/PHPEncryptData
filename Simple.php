@@ -91,7 +91,7 @@ class Simple
     private function padWithPkcs7($plaintext) {
         $block_size = $this->getBlockSize();
 
-        if ($block_size > 255) {
+        if ($block_size < 256) {
             throw new \RuntimeException('PKCS7 padding is only well defined for block sizes smaller than 256 bits');
         }
 
