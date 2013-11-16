@@ -148,16 +148,14 @@ generate an encryption key with the following command:
 
 ## Unit Tests
 
-In order to run the unit tests included with the library, you must have
-PHP 5.4 installed (Sorry, it's a PHPUnit requirement). To install all of
-the unit test support libraries, simply change into the library's root and
-enter the following command:
+Execute `phpunit` binary from the project root:
 
-    ./bin/composer.phar install
+    $ phpunit
 
-Once composer has finished doing its thing, issue the following command to
-run the tests:
+If you want to customize the PHPUnit configuration:
 
-    ./bin/runtests
+    $ cp phpunit.xml.dist phpunit.xml
+
+Customize phpunit.xml to your liking.
 
 ## That's it!
