@@ -24,12 +24,12 @@ decrypt() functions when you need them.
 
 My goal with this libary is to improve the baseline for encryption in PHP.
 
-## Cryptgraphic Details
+## Cryptographic Details
 
 For most cryptographic functionality, this libary makes use of the Mcrypt
 extension. The extension has been around for over a decade but is not
-include by default on many distributions. If it is not, you will need to
-ensure that you have installed it.
+include by default on many distributions. You will need to ensure that you
+have it installed.
 
 The cryptographic primitives & practices behind this library are:
 
@@ -121,5 +121,3 @@ run the tests:
     ./bin/runtests
 
 ## That's it!
-
-I hope this is better than what we have now.
