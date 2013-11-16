@@ -8,6 +8,9 @@
             "email": "bryan@ravensight.org"
         }
     ],
+    "autoload": {
+        "classmap": [""]
+    },
     "require": {
         "ext-mcrypt": "*"
     },

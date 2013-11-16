@@ -1,8 +1,6 @@
 <?php // vim:ts=4:sts=4:sw=4:et:
 
-require_once 'Autoloader.php';
-\PHPCrypt\Autoloader::install();
-\PHPCrypt\Autoloader::registerIncludePath();
+require __DIR__ . '/vendor/autoload.php';
 
 $phpcrypt = new \PHPCrypt\Simple(
     '6zp4y5vnUQpfEroWI6dMq5lC46F5Dmqa4NDcM1W4u2k=',
