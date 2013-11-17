@@ -29,7 +29,7 @@ class Simple
     public function __construct($encryptionKey, $macKey) {
         $this->_encryptionKey = base64_decode($encryptionKey);
         $this->_macKey = base64_decode($macKey);
-        
+
         $keySize = $this->_getKeySize();
 
         if (strlen($this->_encryptionKey) !== $keySize) {
@@ -37,7 +37,7 @@ class Simple
                 sprintf('Encryption key must be exactly %s bytes long.', $keySize)
             );
         }
-        
+
         if (strlen($this->_macKey) !== $keySize) {
             throw new \InvalidArgumentException(
                 sprintf('MAC key must be exactly %s bytes long.', $keySize)
@@ -49,19 +49,19 @@ class Simple
         if (is_null($iv)) {
             $iv = $this->generateIv();
         }
-        
+
         $decodedIv = base64_decode($iv);
-        
+
         if (strlen($decodedIv) !== $this->_getBlockSize()) {
             throw new \InvalidArgumentException(
                 sprintf('IV must be exactly %s bytes long.', $this->_getBlockSize())
             );
         }
-        
+
         $paddedPlaintext = $this->_padWithPkcs7($plaintext);
 
-        $ciphertext = $decodedIv . mcrypt_encrypt($this->_encryptionAlgorithm, 
-            $this->_encryptionKey, $paddedPlaintext, $this->_mode, $decodedIv 
+        $ciphertext = $decodedIv . mcrypt_encrypt($this->_encryptionAlgorithm,
+            $this->_encryptionKey, $paddedPlaintext, $this->_mode, $decodedIv
         );
 
         $signature = hash_hmac($this->_macAlgorithm, $ciphertext, $this->_macKey, true);
