@@ -35,7 +35,7 @@ class Simple
         }
         
         $decodedIv = base64_decode($iv);
-        $paddedPlaintext = $this->padWithPkcs7($plaintext);
+        $paddedPlaintext = $this->_padWithPkcs7($plaintext);
 
         $ciphertext = $decodedIv . mcrypt_encrypt($this->_encryptionAlgorithm, 
             $this->_encryptionKey, $paddedPlaintext, $this->_mode, $decodedIv 
@@ -63,33 +63,29 @@ class Simple
             throw new \RuntimeException('Invalid signature');
         }
 
-        $iv = substr($decodedCiphertext, 0, $this->getBlockSize());
-        $ciphertext = substr($decodedCiphertext, $this->getBlockSize());
+        $iv = substr($decodedCiphertext, 0, $this->_getBlockSize());
+        $ciphertext = substr($decodedCiphertext, $this->_getBlockSize());
 
         $paddedPlaintext = mcrypt_decrypt($this->_encryptionAlgorithm,
             $this->_encryptionKey, $ciphertext, $this->_mode, $iv);
 
-        return $this->trimPkcs7($paddedPlaintext);
+        return $this->_trimPkcs7($paddedPlaintext);
     }
 
     public function generateIv() {
-        return base64_encode(mcrypt_create_iv($this->getBlockSize(), MCRYPT_DEV_URANDOM));
+        return base64_encode(mcrypt_create_iv($this->_getBlockSize(), MCRYPT_DEV_URANDOM));
     }
 
-    public function generateKey() {
-        return base64_encode(mcrypt_create_iv($this->getKeySize(), MCRYPT_DEV_URANDOM));
-    }
-    
-    private function getBlockSize() {
+    private function _getBlockSize() {
         return mcrypt_get_iv_size($this->_encryptionAlgorithm, $this->_mode);
     }
 
-    private function getKeySize() {
+    private function _getKeySize() {
         return mcrypt_get_key_size($this->_encryptionAlgorithm, $this->_mode);
     }
 
-    private function padWithPkcs7($plaintext) {
-        $blockSize = $this->getBlockSize();
+    private function _padWithPkcs7($plaintext) {
+        $blockSize = $this->_getBlockSize();
 
         if ($blockSize > 255) {
             throw new \RuntimeException('PKCS7 padding is only well defined for block sizes smaller than 256 bits');
@@ -100,7 +96,7 @@ class Simple
         return $plaintext . str_repeat(chr($padLength), $padLength);
     }
 
-    private function trimPkcs7($plaintext) {
+    private function _trimPkcs7($plaintext) {
         $padChar = substr($plaintext, -1);
         $padLength = ord($padChar);
 
