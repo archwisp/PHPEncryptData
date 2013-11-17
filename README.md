@@ -1,6 +1,10 @@
 # \PHPCrypt\ - Simple Encryption Library For PHP 5.3+
 
-Written by Bryan C. Geraghty
+If you are looking for the answer to the question, "How do I encrypt
+sensitive data in PHP?", you are in the correct place.
+
+Read through this README, execute a couple of commands, write about four 
+lines of code, and you will have secure encryption.
 
 ## Installation
 
@@ -35,14 +39,6 @@ Install via Composer:
     $decrypted = $phpcrypt->decrypt($ciphertext);
     printf("Decrypted: %s\n", $decrypted);
 
-## Introduction
-
-If you are looking for the answer to the question, "How do I encrypt
-sensitive data in PHP?", you are in the correct place.
-
-Read through this README, execute a couple of commands, write about four 
-lines of code, and you will have secure encryption.
-
 ## How This Library Came To Be
 
 A fellow programmer/friend whom I know from my local PHP user group was
@@ -65,6 +61,15 @@ decrypt() functions when you need them.
 
 My goal with this library is to improve the baseline for encryption in PHP.
 
+## Calling Smart Crypto People
+
+Every bit of review and feedback you're willing to provide is appreciated.
+If you see a major bug, efficiency improvement, or design decision that can 
+be improved in a concrete way, please submit an issue. Simple.php is where
+everything happens and SimpleTest.php contains the unit tests.
+
+Thank you!
+
 ## Cryptographic Details
 
 For most cryptographic functionality, this library makes use of the Mcrypt
@@ -80,15 +85,6 @@ The cryptographic primitives & practices behind this library are:
 * Encrypt-Then-MAC construction
 * Constant-time MAC comparison
 * Uses /dev/urandom as its PRNG
-
-## Smart Crypto People
-
-Every bit of review and feedback you're willing to provide is appreciated.
-If you see a major bug, efficiency improvement, or design decision that can 
-be improved in a concrete way, please submit an issue. Simple.php is where
-everything happens and SimpleTest.php contains the unit tests.
-
-Thank you!
 
 ## Example
 
@@ -148,14 +144,19 @@ generate an encryption key with the following command:
 
 ## Unit Tests
 
-Execute `phpunit` binary from the project root:
+1. Perform steps 1 & 2 from the Installation section if you haven't already
 
-    $ phpunit
-
-If you want to customize the PHPUnit configuration:
+2. (optional) If you want to customize the PHPUnit configuration:
 
     $ cp phpunit.xml.dist phpunit.xml
 
-Customize phpunit.xml to your liking.
+Then customize phpunit.xml to your liking.
 
-## That's it!
+3. Execute `phpunit` binary from the project root:
+
+    $ ./vendor/bin/phpunit
+
+## Credits
+
+Bryan C. Geraghty: Original author
+John Kary: Responsible for really cleaning the project up
