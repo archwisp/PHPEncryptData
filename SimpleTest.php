@@ -75,6 +75,33 @@ class SimpleTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($plaintext, $this->_instance->decrypt($ciphertext));
     }
 
+    public function invalidKeyData() {
+        return array(
+            array(null),
+            array(''),
+            array('Foo'),
+            array('0123456789ABCDF0123456789ABCDF'),
+            array('0123456789ABCDF0123456789ABCDF0123456789ABCDEF'),
+            array('3e5VO09Oslbw/sskJPdloizTQ/2iz8Icyo+VT3PxYW='),
+        );
+    }
+
+    /**
+     * @dataProvider invalidKeyData
+     */
+    public function testEncryptInvalidEncryptionKeySize($invalidKey) {
+        $this->setExpectedException('Exception');
+        $instance = new \PHPCrypt\Simple($invalidKey, $this->_macKey);
+    }
+    
+    /**
+     * @dataProvider invalidKeyData
+     */
+    public function testEncryptInvalidMacKeySize($invalidKey) {
+        $this->setExpectedException('Exception');
+        $instance = new \PHPCrypt\Simple($this->_encryptionKey, $invalidKey);
+    }
+
     public function testEncryptInvalidIvLength() {
         $this->setExpectedException('Exception');
 

@@ -27,6 +27,16 @@ class Simple
     public function __construct($encryptionKey, $macKey) {
         $this->_encryptionKey = base64_decode($encryptionKey);
         $this->_macKey = base64_decode($macKey);
+        
+        $keySize = $this->_getKeySize();
+
+        if (strlen($this->_encryptionKey) !== $keySize) {
+            throw new \InvalidArgumentException(sprintf('Key must be exactly %s bytes long.', $keySize));
+        }
+        
+        if (strlen($this->_macKey) !== $keySize) {
+            throw new \InvalidArgumentException(sprintf('Key must be exactly %s bytes long.', $keySize));
+        }
     }
 
     public function encrypt($plaintext, $iv = null) {
