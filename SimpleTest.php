@@ -16,17 +16,24 @@ class SimpleTest extends \PHPUnit_Framework_TestCase
         $ciphertext = $this->_instance->encrypt('FooBar ', 'lAuCU7ft5tnHPKWRjF1IKV4J6V9/eCGQIisHZfuqMtY=');
         
         $this->assertEquals(
-            'lAuCU7ft5tnHPKWRjF1IKV4J6V9/eCGQIisHZfuqMta/3gJg7IhHgxvaUY6isRyPcRq+x/rQfnPxY/A1XqY2nA==|6MBBCKBbYc+aWLpnk1MQVW2jM5Jnz5oHfXnDriyIL9Q=',
+            'cmpkLTI1Ni1obWFjLXNoYTI1NnxsQXVDVTdmdDV0bkhQS1dSakYxSUtWNEo2VjkvZUNHUUlpc0haZnVxTXRhLzNnSmc3SWhIZ3h2YVVZNmlzUnlQY1JxK3gvclFmblB4WS9BMVhxWTJuQT09fDZNQkJDS0JiWWMrYVdMcG5rMU1RVlcyak01Sm56NW9IZlhuRHJpeUlMOVE9',
             $ciphertext
         );
     }
     
     public function testDecrypt() {
         $plaintext = $this->_instance->decrypt(
-            'lAuCU7ft5tnHPKWRjF1IKV4J6V9/eCGQIisHZfuqMta/3gJg7IhHgxvaUY6isRyPcRq+x/rQfnPxY/A1XqY2nA==|6MBBCKBbYc+aWLpnk1MQVW2jM5Jnz5oHfXnDriyIL9Q='
+            'cmpkLTI1Ni1obWFjLXNoYTI1NnxsQXVDVTdmdDV0bkhQS1dSakYxSUtWNEo2VjkvZUNHUUlpc0haZnVxTXRhLzNnSmc3SWhIZ3h2YVVZNmlzUnlQY1JxK3gvclFmblB4WS9BMVhxWTJuQT09fDZNQkJDS0JiWWMrYVdMcG5rMU1RVlcyak01Sm56NW9IZlhuRHJpeUlMOVE9'
         );
         
         $this->assertEquals('FooBar ', $plaintext);
+    }
+    
+    public function testDecryptUnknownConstruction() {
+        $this->setExpectedException('Exception', 'Unknown construction, "rjd-256-hmac-sha256/128"');
+        $plaintext = $this->_instance->decrypt(
+            'cmpkLTI1Ni1obWFjLXNoYTI1Ni8xMjh8bEF1Q1U3ZnQ1dG5IUEtXUmpGMUlLVjRKNlY5L2VDR1FJaXNIWmZ1cU10YS8zZ0pnN0loSGd4dmFVWTZpc1J5UGNScSt4L3JRZm5QeFkvQTFYcVkybkE9PXw2TUJCQ0tCYlljK2FXTHBuazFNUVZXMmpNNUpuejVvSGZYbkRyaXlJTDlRPQ=='
+        );
     }
 
     /**
@@ -39,7 +46,8 @@ class SimpleTest extends \PHPUnit_Framework_TestCase
 
         for ($x = 0; $x < 100; $x++) {
             $signedCiphertext = $this->_instance->encrypt('Randomize this with new IVs');
-            list($encodedCiphertext, $encodedSignature) = explode('|', $signedCiphertext);
+            $signedCiphertext = base64_decode($signedCiphertext);
+            list($construction, $encodedCiphertext, $encodedSignature) = explode('|', $signedCiphertext);
             $ciphertext = base64_decode($encodedCiphertext);
             $randomByte = rand(1, strlen($ciphertext));
             $mask = str_repeat("\x00", $randomByte -1) . "\x01" . str_repeat("\x00", strlen($ciphertext) - $randomByte);
@@ -53,8 +61,7 @@ class SimpleTest extends \PHPUnit_Framework_TestCase
             // printf("Invalid Ciphertext: %s\n", bin2hex($invalidCiphertext));
             
             $encodedInvalidCiphertext = base64_encode($invalidCiphertext);
-
-            $invalidCiphertexts[] = array($encodedInvalidCiphertext . '|' . $encodedSignature);
+            $invalidCiphertexts[] = array(base64_encode($construction . '|' . $encodedInvalidCiphertext . '|' . $encodedSignature));
         }
 
         return $invalidCiphertexts;

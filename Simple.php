@@ -24,6 +24,8 @@ class Simple
     private $_encryptionKey;
     private $_macKey;
 
+    const RJD_256_HMAC_SHA256 = 'rjd-256-hmac-sha256';
+
     public function __construct($encryptionKey, $macKey) {
         $this->_encryptionKey = base64_decode($encryptionKey);
         $this->_macKey = base64_decode($macKey);
@@ -64,23 +66,28 @@ class Simple
 
         $signature = hash_hmac($this->_macAlgorithm, $ciphertext, $this->_macKey, true);
 
-        return base64_encode($ciphertext) . '|' . base64_encode($signature);
+        return base64_encode(
+            self::RJD_256_HMAC_SHA256 . '|' . base64_encode($ciphertext) . '|' . base64_encode($signature)
+        );
     }
 
     public function decrypt($signedCiphertext) {
+        $signedCiphertext = base64_decode($signedCiphertext);
         $signedCiphertextParts = explode('|', $signedCiphertext);
 
-        if (count($signedCiphertextParts) !== 2) {
-            throw new \RuntimeException('Invalid signature');
+        if (count($signedCiphertextParts) !== 3) {
+            throw new \RuntimeException('Invalid encoding');
         }
 
-        $decodedCiphertext = base64_decode($signedCiphertextParts[0]);
-        
-        $signature = hash_hmac($this->_macAlgorithm, 
-            $decodedCiphertext, $this->_macKey, true
-        );
+        if ($signedCiphertextParts[0] !== self::RJD_256_HMAC_SHA256) {
+            throw new \RunTimeException(sprintf('Unknown construction, "%s"', $signedCiphertextParts[0]));
+        }
 
-        if (!$this->_compareMac($signature, base64_decode($signedCiphertextParts[1]))) {
+        $decodedCiphertext = base64_decode($signedCiphertextParts[1]);
+        
+        $signature = hash_hmac($this->_macAlgorithm, $decodedCiphertext, $this->_macKey, true);
+
+        if (!$this->_compareMac($signature, base64_decode($signedCiphertextParts[2]))) {
             throw new \RuntimeException('Invalid signature');
         }
 
