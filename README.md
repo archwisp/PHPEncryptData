@@ -8,25 +8,25 @@ A fellow programmer/friend whom I know from my local PHP user group was
 tasked with encrypting some data in an application and started searching
 Google for a good solution. After finding something promising, she sent
 what she had found to me asking for a review, knowing that I have a deep
-intrest and some backgroud in cryptography. Upon reviewing the code, I
+interest and some background in cryptography. Upon reviewing the code, I
 found some critical problems. As I wrote my response and explained the
 fixes that would need to be implemented, I realized that these are not
 things that I could expect anyone without some cryptanalysis experience to
 to implement correctly.
 
-So, I set out to create this libray in which I have made all of the hard
-decisions for you. There are better contructions out there but they come
+So, I set out to create this library in which I have made all of the hard
+decisions for you. There are better constructions out there but they come
 with some baggage that is more difficult to handle and so they are not
 really suited for "simple" libraries. In this library's current design,
 all you must do is run a couple of commands to generate a couple of keys
 that will be stuck in your code. Then, you just call the encrypt() and
 decrypt() functions when you need them.
 
-My goal with this libary is to improve the baseline for encryption in PHP.
+My goal with this library is to improve the baseline for encryption in PHP.
 
 ## Cryptographic Details
 
-For most cryptographic functionality, this libary makes use of the Mcrypt
+For most cryptographic functionality, this library makes use of the Mcrypt
 extension. The extension has been around for over a decade but is not
 include by default on many distributions. You will need to ensure that you
 have it installed.
@@ -51,7 +51,7 @@ Thank you!
 
 ## Example
 
-The goal of this libary was secure defaults and simplicity. There are
+The goal of this library was secure defaults and simplicity. There are
 five simple steps to follow to encrypt and decrypt data (see the
 Example.php script to see it all in one place):
 
@@ -115,7 +115,7 @@ enter the following command:
 
     ./bin/composer.phar install
 
-Once composer has finished doing its thing, issue the folowing command to
+Once composer has finished doing its thing, issue the following command to
 run the tests:
 
     ./bin/runtests
