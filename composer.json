@@ -1,5 +1,23 @@
 {
+    "name": "archwisp/php-crypt",
+    "description": "Simple Encryption Library For PHP 5.3+",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Bryan C. Geraghty",
+            "email": "bryan@ravensight.org"
+        }
+    ],
+    "autoload": {
+        "classmap": [""]
+    },
+    "require": {
+        "ext-mcrypt": "*"
+    },
     "require-dev": {
-        "phpunit/phpunit": "3.7.*"
+        "phpunit/phpunit": "~3.7"
+    },
+    "config": {
+        "bin-dir": "bin"
     }
 }

@@ -2,6 +2,39 @@
 
 Written by Bryan C. Geraghty
 
+## Installation
+
+Install via Composer:
+
+1. [Download Composer](http://getcomposer.org/download/) using your preferred method.
+2. Add PHPCrypt to your project:
+
+        $ php composer.phar require archwisp/php-crypt
+
+3. Generate your encryption key and keep it handy:
+
+        $ head -c 32 /dev/urandom | base64
+
+4. Generate your MAC key and keep it handy:
+
+        $ head -c 32 /dev/urandom | base64
+
+## Basic Usage
+
+    <?php
+
+    require __DIR__ . '/vendor/autoload.php';
+
+    $encryptionKey = '6zp4y5vnUQpfEroWI6dMq5lC46F5Dmqa4NDcM1W4u2k=';
+    $macKey = 'RJikKksPg3UmqgQPXBwCmcSOMHQn0iOtQAFcfRcQOTU=';
+    $phpcrypt = new \PHPCrypt\Simple($encryptionKey, $macKey);
+
+    $ciphertext = $phpcrypt->encrypt('Foobar');
+    printf("Ciphertext: %s\n", $ciphertext);
+
+    $decrypted = $phpcrypt->decrypt($ciphertext);
+    printf("Decrypted: %s\n", $decrypted);
+
 ## Introduction
 
 If you are looking for the answer to the question, "How do I encrypt
@@ -82,8 +115,7 @@ generate an encryption key with the following command:
 
         <?php
 
-        require_once 'PHPCrypt/Autoloader.php';
-        \PHPCrypt\Autoloader::install();
+        require __DIR__ . '/vendor/autoload.php';
 
         $phpcrypt = new \PHPCrypt\Simple(
             '6zp4y5vnUQpfEroWI6dMq5lC46F5Dmqa4NDcM1W4u2k=',
@@ -116,16 +148,14 @@ generate an encryption key with the following command:
 
 ## Unit Tests
 
-In order to run the unit tests included with the library, you must have
-PHP 5.4 installed (Sorry, it's a PHPUnit requirement). To install all of
-the unit test support libraries, simply change into the library's root and
-enter the following command:
+Execute `phpunit` binary from the project root:
 
-    ./bin/composer.phar install
+    $ phpunit
 
-Once composer has finished doing its thing, issue the following command to
-run the tests:
+If you want to customize the PHPUnit configuration:
 
-    ./bin/runtests
+    $ cp phpunit.xml.dist phpunit.xml
+
+Customize phpunit.xml to your liking.
 
 ## That's it!
