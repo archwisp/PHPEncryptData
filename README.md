@@ -7,7 +7,7 @@ Written by Bryan C. Geraghty
 If you are looking for the answer to the question, "How do I encrypt
 sensitive data in PHP?", you are in the correct place.
 
-Read through this README, execute a couple fo commands, write about four 
+Read through this README, execute a couple of commands, write about four 
 lines of code, and you will have secure encryption.
 
 ## How This Library Came To Be
