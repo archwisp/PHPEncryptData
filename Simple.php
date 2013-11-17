@@ -31,11 +31,15 @@ class Simple
         $keySize = $this->_getKeySize();
 
         if (strlen($this->_encryptionKey) !== $keySize) {
-            throw new \InvalidArgumentException(sprintf('Key must be exactly %s bytes long.', $keySize));
+            throw new \InvalidArgumentException(
+                sprintf('Encryption key must be exactly %s bytes long.', $keySize)
+            );
         }
         
         if (strlen($this->_macKey) !== $keySize) {
-            throw new \InvalidArgumentException(sprintf('Key must be exactly %s bytes long.', $keySize));
+            throw new \InvalidArgumentException(
+                sprintf('MAC key must be exactly %s bytes long.', $keySize)
+            );
         }
     }
 
@@ -45,6 +49,13 @@ class Simple
         }
         
         $decodedIv = base64_decode($iv);
+        
+        if (strlen($decodedIv) !== $this->_getBlockSize()) {
+            throw new \InvalidArgumentException(
+                sprintf('IV must be exactly %s bytes long.', $this->_getBlockSize())
+            );
+        }
+        
         $paddedPlaintext = $this->_padWithPkcs7($plaintext);
 
         $ciphertext = $decodedIv . mcrypt_encrypt($this->_encryptionAlgorithm, 

@@ -5,7 +5,6 @@ namespace PHPCrypt;
 class SimpleTest extends \PHPUnit_Framework_TestCase
 {
     private $_instance;
-    private $_iv = '3e5VO09Oslbw/sskJPdloizTQ/2iz8Icyo+VT3PxYWM=';
     private $_encryptionKey = 'nXA5gXtlOgHgxl6EZTfkfDmIzWaRqxZ1rq7DRNCIQ/Q=';
     private $_macKey = 'K9iPmOMowXUvcQTd7ehfcxvvHd4OtzyztQp+wuQwb6U=';
 
