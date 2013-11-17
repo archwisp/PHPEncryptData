@@ -43,16 +43,14 @@ class Simple
 
         $signature = hash_hmac($this->_macAlgorithm, $ciphertext, $this->_macKey, true);
 
-        $output = base64_encode($ciphertext) . '|' . base64_encode($signature);
-
-        return $output; 
+        return base64_encode($ciphertext) . '|' . base64_encode($signature);
     }
 
     public function decrypt($signedCiphertext) {
         $signedCiphertextParts = explode('|', $signedCiphertext);
 
-        If (count($signedCiphertextParts) !== 2) {
-            Throw new \RuntimeException('Invalid signature');
+        if (count($signedCiphertextParts) !== 2) {
+            throw new \RuntimeException('Invalid signature');
         }
 
         $decodedCiphertext = base64_decode($signedCiphertextParts[0]);
@@ -62,7 +60,7 @@ class Simple
         );
 
         if (!$this->_compareMac($signature, base64_decode($signedCiphertextParts[1]))) {
-            Throw new \RuntimeException('Invalid signature');
+            throw new \RuntimeException('Invalid signature');
         }
 
         $iv = substr($decodedCiphertext, 0, $this->getBlockSize());
@@ -91,26 +89,26 @@ class Simple
     }
 
     private function padWithPkcs7($plaintext) {
-        $block_size = $this->getBlockSize();
+        $blockSize = $this->getBlockSize();
 
-        if ($block_size > 255) {
-            throw new RuntimeException('PKCS7 padding is only well defined for block sizes smaller than 256 bits');
+        if ($blockSize > 255) {
+            throw new \RuntimeException('PKCS7 padding is only well defined for block sizes smaller than 256 bits');
         }
 
-        $pad_length = ($block_size - (strlen($plaintext) % $block_size));
+        $padLength = ($blockSize - (strlen($plaintext) % $blockSize));
 
-        return $plaintext . str_repeat(chr($pad_length), $pad_length);
+        return $plaintext . str_repeat(chr($padLength), $padLength);
     }
 
     private function trimPkcs7($plaintext) {
-        $pad_char = substr($plaintext, -1);
-        $pad_length = ord($pad_char);
+        $padChar = substr($plaintext, -1);
+        $padLength = ord($padChar);
 
-        if (substr($plaintext, -$pad_length) !== str_repeat($pad_char, $pad_length)) {
+        if (substr($plaintext, -$padLength) !== str_repeat($padChar, $padLength)) {
             throw new \RuntimeException('Invalid pad value');
         }
 
-        return substr($plaintext, 0, -$pad_length);
+        return substr($plaintext, 0, -$padLength);
     }
 
     /**
@@ -131,8 +129,6 @@ class Simple
         }
         
         /* \x00 if equal, nonzero otherwise */
-        $return = ($result === "\x00") ? true : false;
-        
-        return $return;
+        return ($result === "\x00");
     }
 }
