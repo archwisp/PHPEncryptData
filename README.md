@@ -14,29 +14,34 @@ Install via Composer:
 
         $ php composer.phar require archwisp/php-crypt
 
-3. Generate your encryption key and keep it handy:
-
-        $ head -c 32 /dev/urandom | base64
-
-4. Generate your MAC key and keep it handy:
-
-        $ head -c 32 /dev/urandom | base64
-
 ## Basic Usage
 
-    <?php
+1. Generate your encryption key:
 
-    require __DIR__ . '/vendor/autoload.php';
+        $ head -c 32 /dev/urandom | base64
+        6zp4y5vnUQpfEroWI6dMq5lC46F5Dmqa4NDcM1W4u2k=
 
-    $encryptionKey = '6zp4y5vnUQpfEroWI6dMq5lC46F5Dmqa4NDcM1W4u2k=';
-    $macKey = 'RJikKksPg3UmqgQPXBwCmcSOMHQn0iOtQAFcfRcQOTU=';
-    $phpcrypt = new \PHPCrypt\Simple($encryptionKey, $macKey);
+2. Generate your MAC key:
 
-    $ciphertext = $phpcrypt->encrypt('Foobar');
-    printf("Ciphertext: %s\n", $ciphertext);
+        $ head -c 32 /dev/urandom | base64
+        RJikKksPg3UmqgQPXBwCmcSOMHQn0iOtQAFcfRcQOTU=
 
-    $decrypted = $phpcrypt->decrypt($ciphertext);
-    printf("Decrypted: %s\n", $decrypted);
+3. Write your code:
+
+        <?php
+
+        require __DIR__ . '/vendor/autoload.php';
+
+        $phpcrypt = new \PHPCrypt\Simple(
+                '6zp4y5vnUQpfEroWI6dMq5lC46F5Dmqa4NDcM1W4u2k='
+                'RJikKksPg3UmqgQPXBwCmcSOMHQn0iOtQAFcfRcQOTU='
+        );
+
+        $ciphertext = $phpcrypt->encrypt('Foobar');
+        printf("Ciphertext: %s\n", $ciphertext);
+
+        $decrypted = $phpcrypt->decrypt($ciphertext);
+        printf("Decrypted: %s\n", $decrypted);
 
 ## How This Library Came To Be
 
@@ -96,7 +101,7 @@ generate an encryption key with the following command:
 
         head -c 32 /dev/urandom | base64
 
-The output will look something like (Don't use this key!):
+    The output will look something like (Don't use this sample key!):
         
         6zp4y5vnUQpfEroWI6dMq5lC46F5Dmqa4NDcM1W4u2k=
 
@@ -104,7 +109,7 @@ The output will look something like (Don't use this key!):
 
         head -c 32 /dev/urandom | base64
 
-Again, the output will again look like this (Ensure that it is unique.):
+    Again, the output will again look like this (Ensure that it is unique.):
 
         RJikKksPg3UmqgQPXBwCmcSOMHQn0iOtQAFcfRcQOTU=
 
@@ -123,44 +128,50 @@ Again, the output will again look like this (Ensure that it is unique.):
 
         $ciphertext = $phpcrypt->encrypt('Foobar');
 
-This will generate output similar to this:  
+    This will generate output similar to this:  
 
-        DrZ/CdwAxdia1eO4A04jptl+hBpT57xI8FOEiNMSZE2ol0Pk1xDN6IY5VYi9s7wY9q6ubboF7lPnyQRTkx8y5w==|floT1+Ha5GHuO36+wie9rcNh+cQjRDJ5+OegF3mToew=
+        cmpkLTI1Ni1obWFjLXNoYTI1NnwwalJISnBmdndCVkwxb3l2ckNSbkdoamNzd3h2ZWJCZlB5TDk5Vy90dDJWM2VmZzAyUVgzL0M4elMyR1BjVkxCME1PZnFiaDBONU5nekVxNmRpMjM5UT09fGdaZDNHUXFHc2NhQTZTdVlTQTkvTDNyRG4xV2xuaWhrNys4OTU4K0RJSFk9
 
-As you can see, the output is base64 encoded for you and the MAC is
-appended automatically, so you don't have to worry about anything.
-Just feed plaintext in, and encoded & signed ciphertext comes out.
+    As you can see, the output is base64 encoded for you and the MAC is
+    appended automatically, so you don't have to worry about any of the
+    cryptographic details. Even the construction is encoded into this 
+    string to account for future changes. Just feed plaintext in, and 
+    encoded & signed ciphertext comes out.
 
-Also, keep in mind that the IV for each encryption is randomized, so
-encrypting the same value will produce different ciphertexts. The
-encrypt() function accepts an IV as an optional second argument if you
-need to manually control it. Most people should not use it.
+    Also, keep in mind that the IV for each encryption is randomized, so
+    encrypting the same value will produce different ciphertexts. The
+    encrypt() function accepts an IV as an optional second argument if you
+    need to manually control it. Most people should not use it.
 
 5. Call the decrypt() function:
 
         $ciphertext = $phpcrypt->decrypt(
-            'DrZ/CdwAxdia1eO4A04jptl+hBpT57xI8FOEiNMSZE2ol0Pk1xDN6IY5VYi9s7wY9q6ubboF7lPnyQRTkx8y5w==|floT1+Ha5GHuO36+wie9rcNh+cQjRDJ5+OegF3mToew='
+            'cmpkLTI1Ni1obWFjLXNoYTI1NnwwalJISnBmdndCVkwxb3l2ckNSbkdoamNzd3h2ZWJCZlB5TDk5Vy90dDJWM2VmZzAyUVgzL0M4elMyR1BjVkxCME1PZnFiaDBONU5nekVxNmRpMjM5UT09fGdaZDNHUXFHc2NhQTZTdVlTQTkvTDNyRG4xV2xuaWhrNys4OTU4K0RJSFk9'
         );
 
-This will produce the value:
+    This will produce the value:
 
         'Foobar'
 
 ## Unit Tests
 
-1. Perform steps 1 & 2 from the Installation section if you haven't already
+1. [Download Composer](http://getcomposer.org/download/) using your preferred method.
 
-2. (optional) If you want to customize the PHPUnit configuration:
+2. From the PHPCrypt directory, install the project dependencies:
 
-    $ cp phpunit.xml.dist phpunit.xml
+        $ php composer.phar install
 
-Then customize phpunit.xml to your liking.
+3. (optional) If you want to customize the PHPUnit configuration:
 
-3. Execute `phpunit` binary from the project root:
+        $ cp phpunit.xml.dist phpunit.xml
 
-    $ ./vendor/bin/phpunit
+    Then customize phpunit.xml to your liking.
+
+4. Execute `phpunit` binary from the project root:
+
+        $ ./vendor/bin/phpunit
 
 ## Credits
 
-Bryan C. Geraghty: Original author
-John Kary: Responsible for really cleaning the project up
+* Bryan C. Geraghty: Original author
+* John Kary: Responsible for really cleaning the project up
