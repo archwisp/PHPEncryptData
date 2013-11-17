@@ -1,10 +1,9 @@
 # \PHPCrypt\ - Simple Encryption Library For PHP 5.3+
 
 If you are looking for the answer to the question, "How do I encrypt
-sensitive data in PHP?", you are in the correct place.
-
-Read through this README, execute a couple of commands, write about four 
-lines of code, and you will have secure encryption.
+sensitive data in PHP?", you are in the correct place. Read through
+this README, execute a couple of commands, write about four lines of
+code, and you will have secure encryption.
 
 ## Installation
 
@@ -86,7 +85,7 @@ The cryptographic primitives & practices behind this library are:
 * Constant-time MAC comparison
 * Uses /dev/urandom as its PRNG
 
-## Example
+## Example (Explained)
 
 The goal of this library was secure defaults and simplicity. There are
 five simple steps to follow to encrypt and decrypt data (see the
@@ -97,15 +96,17 @@ generate an encryption key with the following command:
 
         head -c 32 /dev/urandom | base64
 
-    The output will look something like (IT MUST BE UNIQUE!):  
-    6zp4y5vnUQpfEroWI6dMq5lC46F5Dmqa4NDcM1W4u2k=
+The output will look something like (Don't use this key!):
+        
+        6zp4y5vnUQpfEroWI6dMq5lC46F5Dmqa4NDcM1W4u2k=
 
 2. Run the command a second time to generate your MAC key:
 
         head -c 32 /dev/urandom | base64
 
-    The output will again look like this:  
-    RJikKksPg3UmqgQPXBwCmcSOMHQn0iOtQAFcfRcQOTU=
+Again, the output will again look like this (Ensure that it is unique.):
+
+        RJikKksPg3UmqgQPXBwCmcSOMHQn0iOtQAFcfRcQOTU=
 
 3. Given the above inputs, add the following code to your bootstrap:
 
@@ -122,17 +123,18 @@ generate an encryption key with the following command:
 
         $ciphertext = $phpcrypt->encrypt('Foobar');
 
-    This will generate output similar to this:  
-    DrZ/CdwAxdia1eO4A04jptl+hBpT57xI8FOEiNMSZE2ol0Pk1xDN6IY5VYi9s7wY9q6ubboF7lPnyQRTkx8y5w==|floT1+Ha5GHuO36+wie9rcNh+cQjRDJ5+OegF3mToew=
+This will generate output similar to this:  
 
-    As you can see, the output is base64 encoded for you and the MAC is
-    appended automatically, so you don't have to worry about anything.
-    Just feed plaintext in, and encoded & signed ciphertext comes out.
+        DrZ/CdwAxdia1eO4A04jptl+hBpT57xI8FOEiNMSZE2ol0Pk1xDN6IY5VYi9s7wY9q6ubboF7lPnyQRTkx8y5w==|floT1+Ha5GHuO36+wie9rcNh+cQjRDJ5+OegF3mToew=
 
-    Also, keep in mind that the IV for each encryption is randomized, so
-    encrypting the same value will produce different ciphertexts. The
-    encrypt() function accepts an IV as an optional second argument if you
-    need to manually control it. Most people should not use it.
+As you can see, the output is base64 encoded for you and the MAC is
+appended automatically, so you don't have to worry about anything.
+Just feed plaintext in, and encoded & signed ciphertext comes out.
+
+Also, keep in mind that the IV for each encryption is randomized, so
+encrypting the same value will produce different ciphertexts. The
+encrypt() function accepts an IV as an optional second argument if you
+need to manually control it. Most people should not use it.
 
 5. Call the decrypt() function:
 
@@ -140,7 +142,9 @@ generate an encryption key with the following command:
             'DrZ/CdwAxdia1eO4A04jptl+hBpT57xI8FOEiNMSZE2ol0Pk1xDN6IY5VYi9s7wY9q6ubboF7lPnyQRTkx8y5w==|floT1+Ha5GHuO36+wie9rcNh+cQjRDJ5+OegF3mToew='
         );
 
-    This will produce the value 'Foobar'.
+This will produce the value:
+
+        'Foobar'
 
 ## Unit Tests
 
