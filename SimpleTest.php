@@ -42,6 +42,23 @@ class SimpleTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function invalidCiphertextPartsData()
+    {
+        return array(
+            'Too few parts' => array('cGFydDF8cGFydDI='), // 'part1|part2'
+            'Too many parts' => array('cGFydDF8cGFydDJ8cGFydDN8cGFydDQ='), // 'part1|part2|part3|part4'
+        );
+    }
+
+    /**
+     * @dataProvider invalidCiphertextPartsData
+     * @expectedException \RuntimeException
+     * @expectedExceptionMessage Invalid encoding
+     */
+    public function testDecryptingCiphertextWithWrongNumberOfPartsThrowsException($ciphertext) {
+        $this->_instance->decrypt($ciphertext);
+    }
+
     /**
      * Encrypts the same string with randomized IVs and flips a single bit of
      * the ciphertext.
