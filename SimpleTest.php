@@ -15,7 +15,7 @@ class SimpleTest extends \PHPUnit_Framework_TestCase
         $this->_instance = new Simple($this->_encryptionKey, $this->_macKey);
     }
 
-    public function testEncrypt() {
+    public function testCanEncryptPlaintext() {
         $ciphertext = $this->_instance->encrypt('FooBar ', 'lAuCU7ft5tnHPKWRjF1IKV4J6V9/eCGQIisHZfuqMtY=');
         
         $this->assertEquals(
@@ -24,7 +24,7 @@ class SimpleTest extends \PHPUnit_Framework_TestCase
         );
     }
     
-    public function testDecrypt() {
+    public function testCanDecryptCiphertext() {
         $plaintext = $this->_instance->decrypt(
             'cmpkLTI1Ni1obWFjLXNoYTI1NnxsQXVDVTdmdDV0bkhQS1dSakYxSUtWNEo2VjkvZUNHUUlpc0haZnVxTXRhLzNnSmc3SWhIZ3h2YVVZNmlzUnlQY1JxK3gvclFmblB4WS9BMVhxWTJuQT09fDZNQkJDS0JiWWMrYVdMcG5rMU1RVlcyak01Sm56NW9IZlhuRHJpeUlMOVE9'
         );
@@ -32,7 +32,7 @@ class SimpleTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('FooBar ', $plaintext);
     }
     
-    public function testDecryptUnknownConstruction() {
+    public function testDecryptingSignedCiphertextWithUnknownConstructionThrowsException() {
         $this->setExpectedException('RunTimeException', 'Unknown construction, "rjd-256-hmac-sha256/128"');
         $this->_instance->decrypt(
             'cmpkLTI1Ni1obWFjLXNoYTI1Ni8xMjh8bEF1Q1U3ZnQ1dG5IUEtXUmpGMUlLVjRKNlY5L2VDR1FJaXNIWmZ1cU10YS8zZ0pnN0loSGd4dmFVWTZpc1J5UGNScSt4L3JRZm5QeFkvQTFYcVkybkE9PXw2TUJCQ0tCYlljK2FXTHBuazFNUVZXMmpNNUpuejVvSGZYbkRyaXlJTDlRPQ=='
@@ -73,12 +73,12 @@ class SimpleTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider invalidCiphertextData
      */
-    public function testDecryptInvalidCiphertext($signedCiphertext) { 
+    public function testDecryptingInvalidCiphertextThrowsException($signedCiphertext) {
         $this->setExpectedException('RuntimeException', 'Invalid signature');
         $this->_instance->decrypt($signedCiphertext);
     }
     
-    public function testEncryptAndDecrypt() {
+    public function testEncryptedDataCanBeDecrypted() {
         $plaintext = 'Something';
         $ciphertext = $this->_instance->encrypt('Something');
         $this->assertEquals($plaintext, $this->_instance->decrypt($ciphertext));
@@ -98,7 +98,7 @@ class SimpleTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider invalidKeyData
      */
-    public function testEncryptInvalidEncryptionKeySize($invalidKey) {
+    public function testInvalidEncryptionKeyThrowsException($invalidKey) {
         $this->setExpectedException('InvalidArgumentException');
         new Simple($invalidKey, $this->_macKey);
     }
@@ -106,7 +106,7 @@ class SimpleTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider invalidKeyData
      */
-    public function testEncryptInvalidMacKeySize($invalidKey) {
+    public function testInvalidMacKeySizeThrowsException($invalidKey) {
         $this->setExpectedException('InvalidArgumentException');
         new Simple($this->_encryptionKey, $invalidKey);
     }
@@ -117,7 +117,7 @@ class SimpleTest extends \PHPUnit_Framework_TestCase
         $this->_instance->encrypt('FooBar ', 'wrong-iv-length');
     }
 
-    public function testGenerateIv() {
+    public function testDifferentIvGeneratedOnEachRun() {
         $iv = $this->_instance->generateIv();
         $secondIv = $this->_instance->generateIv();
         $this->assertNotEquals($iv, $secondIv);
