@@ -111,13 +111,10 @@ class SimpleTest extends \PHPUnit_Framework_TestCase
         new Simple($this->_encryptionKey, $invalidKey);
     }
 
-    public function testEncryptInvalidIvLength() {
-        $this->setExpectedException('Exception');
+    public function testEncryptWithInvalidIvLengthThrowsException() {
+        $this->setExpectedException('InvalidArgumentException');
 
-        $ciphertext = $this->_instance->encrypt(
-            'FooBar ', $this->_encryptionKey, $this->macKey, 'Short IV');
-
-        $this->assertEquals('This should never execute', base64_encode($ciphertext));
+        $this->_instance->encrypt('FooBar ', 'wrong-iv-length');
     }
 
     public function testGenerateIv() {
