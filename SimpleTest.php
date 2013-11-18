@@ -9,7 +9,7 @@ class SimpleTest extends \PHPUnit_Framework_TestCase
     private $_macKey = 'K9iPmOMowXUvcQTd7ehfcxvvHd4OtzyztQp+wuQwb6U=';
 
     public function setUp() {
-        $this->_instance = new \PHPCrypt\Simple($this->_encryptionKey, $this->_macKey);
+        $this->_instance = new Simple($this->_encryptionKey, $this->_macKey);
     }
 
     public function testEncrypt() {
@@ -97,7 +97,7 @@ class SimpleTest extends \PHPUnit_Framework_TestCase
      */
     public function testEncryptInvalidEncryptionKeySize($invalidKey) {
         $this->setExpectedException('Exception');
-        $instance = new \PHPCrypt\Simple($invalidKey, $this->_macKey);
+        $instance = new Simple($invalidKey, $this->_macKey);
     }
     
     /**
@@ -105,7 +105,7 @@ class SimpleTest extends \PHPUnit_Framework_TestCase
      */
     public function testEncryptInvalidMacKeySize($invalidKey) {
         $this->setExpectedException('Exception');
-        $instance = new \PHPCrypt\Simple($this->_encryptionKey, $invalidKey);
+        $instance = new Simple($this->_encryptionKey, $invalidKey);
     }
 
     public function testEncryptInvalidIvLength() {
