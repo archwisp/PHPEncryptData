@@ -127,9 +127,14 @@ class SimpleTest extends \PHPUnit_Framework_TestCase
     }
 
     public function testDifferentIvGeneratedOnEachRun() {
-        $iv = $this->_instance->generateIv();
-        $secondIv = $this->_instance->generateIv();
+        $expected = 20;
+        $ivs = array();
+        for ($i = 1; $i <= $expected; $i++) {
+            $ivs[] = $this->_instance->generateIv();
+        }
 
-        $this->assertNotSame($iv, $secondIv);
+        $duplicatesRemoved = array_values($ivs);
+
+        $this->assertCount($expected, $duplicatesRemoved);
     }
 }
