@@ -17,21 +17,21 @@ class SimpleTest extends \PHPUnit_Framework_TestCase
 
     public function testCanEncryptPlaintext() {
         $ciphertext = $this->_instance->encrypt('FooBar ', 'lAuCU7ft5tnHPKWRjF1IKV4J6V9/eCGQIisHZfuqMtY=');
-        
+
         $this->assertEquals(
             'cmpkLTI1Ni1obWFjLXNoYTI1NnxsQXVDVTdmdDV0bkhQS1dSakYxSUtWNEo2VjkvZUNHUUlpc0haZnVxTXRhLzNnSmc3SWhIZ3h2YVVZNmlzUnlQY1JxK3gvclFmblB4WS9BMVhxWTJuQT09fDZNQkJDS0JiWWMrYVdMcG5rMU1RVlcyak01Sm56NW9IZlhuRHJpeUlMOVE9',
             $ciphertext
         );
     }
-    
+
     public function testCanDecryptCiphertext() {
         $plaintext = $this->_instance->decrypt(
             'cmpkLTI1Ni1obWFjLXNoYTI1NnxsQXVDVTdmdDV0bkhQS1dSakYxSUtWNEo2VjkvZUNHUUlpc0haZnVxTXRhLzNnSmc3SWhIZ3h2YVVZNmlzUnlQY1JxK3gvclFmblB4WS9BMVhxWTJuQT09fDZNQkJDS0JiWWMrYVdMcG5rMU1RVlcyak01Sm56NW9IZlhuRHJpeUlMOVE9'
         );
-        
+
         $this->assertEquals('FooBar ', $plaintext);
     }
-    
+
     public function testDecryptingSignedCiphertextWithUnknownConstructionThrowsException() {
         $this->setExpectedException('RunTimeException', 'Unknown construction, "rjd-256-hmac-sha256/128"');
         $this->_instance->decrypt(
@@ -54,7 +54,7 @@ class SimpleTest extends \PHPUnit_Framework_TestCase
             $ciphertext = base64_decode($encodedCiphertext);
             $randomByte = rand(1, strlen($ciphertext));
             $mask = str_repeat("\x00", $randomByte -1) . "\x01" . str_repeat("\x00", strlen($ciphertext) - $randomByte);
-            
+
             // SANITY CHECK: If this mask is removed, this test should fail every 
             // single run because the ciphertext should match.
             $invalidCiphertext = $ciphertext ^ $mask;
@@ -62,7 +62,7 @@ class SimpleTest extends \PHPUnit_Framework_TestCase
             // printf("Ciphertext:         %s\n", bin2hex($ciphertext));
             // printf("Mask:               %s\n", bin2hex($mask));
             // printf("Invalid Ciphertext: %s\n", bin2hex($invalidCiphertext));
-            
+
             $encodedInvalidCiphertext = base64_encode($invalidCiphertext);
             $invalidCiphertexts[] = array(base64_encode($construction . '|' . $encodedInvalidCiphertext . '|' . $encodedSignature));
         }
@@ -77,7 +77,7 @@ class SimpleTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException('RuntimeException', 'Invalid signature');
         $this->_instance->decrypt($signedCiphertext);
     }
-    
+
     public function testEncryptedDataCanBeDecrypted() {
         $plaintext = 'Something';
         $ciphertext = $this->_instance->encrypt('Something');
@@ -102,7 +102,7 @@ class SimpleTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException('InvalidArgumentException', 'Encryption key must be');
         new Simple($invalidKey, $this->_macKey);
     }
-    
+
     /**
      * @dataProvider invalidKeyData
      */
