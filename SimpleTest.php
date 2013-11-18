@@ -32,8 +32,11 @@ class SimpleTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('FooBar ', $plaintext);
     }
 
+    /**
+     * @expectedException \RunTimeException
+     * @expectedExceptionMessage Unknown construction, "rjd-256-hmac-sha256/128"
+     */
     public function testDecryptingSignedCiphertextWithUnknownConstructionThrowsException() {
-        $this->setExpectedException('RunTimeException', 'Unknown construction, "rjd-256-hmac-sha256/128"');
         $this->_instance->decrypt(
             'cmpkLTI1Ni1obWFjLXNoYTI1Ni8xMjh8bEF1Q1U3ZnQ1dG5IUEtXUmpGMUlLVjRKNlY5L2VDR1FJaXNIWmZ1cU10YS8zZ0pnN0loSGd4dmFVWTZpc1J5UGNScSt4L3JRZm5QeFkvQTFYcVkybkE9PXw2TUJCQ0tCYlljK2FXTHBuazFNUVZXMmpNNUpuejVvSGZYbkRyaXlJTDlRPQ=='
         );
@@ -72,9 +75,10 @@ class SimpleTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider invalidCiphertextData
+     * @expectedException \RuntimeException
+     * @expectedExceptionMessage Invalid signature
      */
     public function testDecryptingInvalidCiphertextThrowsException($signedCiphertext) {
-        $this->setExpectedException('RuntimeException', 'Invalid signature');
         $this->_instance->decrypt($signedCiphertext);
     }
 
@@ -98,23 +102,27 @@ class SimpleTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider invalidKeyData
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Encryption key must be
      */
     public function testInvalidEncryptionKeyThrowsException($invalidKey) {
-        $this->setExpectedException('InvalidArgumentException', 'Encryption key must be');
         new Simple($invalidKey, $this->_macKey);
     }
 
     /**
      * @dataProvider invalidKeyData
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage MAC key must be
      */
     public function testInvalidMacKeySizeThrowsException($invalidKey) {
-        $this->setExpectedException('InvalidArgumentException', 'MAC key must be');
         new Simple($this->_encryptionKey, $invalidKey);
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage IV must be exactly
+     */
     public function testEncryptWithInvalidIvLengthThrowsException() {
-        $this->setExpectedException('InvalidArgumentException', 'IV must be exactly');
-
         $this->_instance->encrypt('FooBar ', 'wrong-iv-length');
     }
 
