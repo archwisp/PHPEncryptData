@@ -33,7 +33,7 @@ class SimpleTest extends \PHPUnit_Framework_TestCase
     }
     
     public function testDecryptUnknownConstruction() {
-        $this->setExpectedException('Exception', 'Unknown construction, "rjd-256-hmac-sha256/128"');
+        $this->setExpectedException('RunTimeException', 'Unknown construction, "rjd-256-hmac-sha256/128"');
         $this->_instance->decrypt(
             'cmpkLTI1Ni1obWFjLXNoYTI1Ni8xMjh8bEF1Q1U3ZnQ1dG5IUEtXUmpGMUlLVjRKNlY5L2VDR1FJaXNIWmZ1cU10YS8zZ0pnN0loSGd4dmFVWTZpc1J5UGNScSt4L3JRZm5QeFkvQTFYcVkybkE9PXw2TUJCQ0tCYlljK2FXTHBuazFNUVZXMmpNNUpuejVvSGZYbkRyaXlJTDlRPQ=='
         );
@@ -74,7 +74,7 @@ class SimpleTest extends \PHPUnit_Framework_TestCase
      * @dataProvider invalidCiphertextData
      */
     public function testDecryptInvalidCiphertext($signedCiphertext) { 
-        $this->setExpectedException('Exception', 'Invalid signature');
+        $this->setExpectedException('RuntimeException', 'Invalid signature');
         $this->_instance->decrypt($signedCiphertext);
     }
     
@@ -99,7 +99,7 @@ class SimpleTest extends \PHPUnit_Framework_TestCase
      * @dataProvider invalidKeyData
      */
     public function testEncryptInvalidEncryptionKeySize($invalidKey) {
-        $this->setExpectedException('Exception');
+        $this->setExpectedException('InvalidArgumentException');
         new Simple($invalidKey, $this->_macKey);
     }
     
@@ -107,7 +107,7 @@ class SimpleTest extends \PHPUnit_Framework_TestCase
      * @dataProvider invalidKeyData
      */
     public function testEncryptInvalidMacKeySize($invalidKey) {
-        $this->setExpectedException('Exception');
+        $this->setExpectedException('InvalidArgumentException');
         new Simple($this->_encryptionKey, $invalidKey);
     }
 
