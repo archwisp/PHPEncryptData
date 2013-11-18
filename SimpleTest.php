@@ -18,7 +18,7 @@ class SimpleTest extends \PHPUnit_Framework_TestCase
     public function testCanEncryptPlaintext() {
         $ciphertext = $this->_instance->encrypt('FooBar ', 'lAuCU7ft5tnHPKWRjF1IKV4J6V9/eCGQIisHZfuqMtY=');
 
-        $this->assertEquals(
+        $this->assertSame(
             'cmpkLTI1Ni1obWFjLXNoYTI1NnxsQXVDVTdmdDV0bkhQS1dSakYxSUtWNEo2VjkvZUNHUUlpc0haZnVxTXRhLzNnSmc3SWhIZ3h2YVVZNmlzUnlQY1JxK3gvclFmblB4WS9BMVhxWTJuQT09fDZNQkJDS0JiWWMrYVdMcG5rMU1RVlcyak01Sm56NW9IZlhuRHJpeUlMOVE9',
             $ciphertext
         );
@@ -29,7 +29,7 @@ class SimpleTest extends \PHPUnit_Framework_TestCase
             'cmpkLTI1Ni1obWFjLXNoYTI1NnxsQXVDVTdmdDV0bkhQS1dSakYxSUtWNEo2VjkvZUNHUUlpc0haZnVxTXRhLzNnSmc3SWhIZ3h2YVVZNmlzUnlQY1JxK3gvclFmblB4WS9BMVhxWTJuQT09fDZNQkJDS0JiWWMrYVdMcG5rMU1RVlcyak01Sm56NW9IZlhuRHJpeUlMOVE9'
         );
 
-        $this->assertEquals('FooBar ', $plaintext);
+        $this->assertSame('FooBar ', $plaintext);
     }
 
     public function testDecryptingSignedCiphertextWithUnknownConstructionThrowsException() {
@@ -81,7 +81,8 @@ class SimpleTest extends \PHPUnit_Framework_TestCase
     public function testEncryptedDataCanBeDecrypted() {
         $plaintext = 'Something';
         $ciphertext = $this->_instance->encrypt('Something');
-        $this->assertEquals($plaintext, $this->_instance->decrypt($ciphertext));
+
+        $this->assertSame($plaintext, $this->_instance->decrypt($ciphertext));
     }
 
     public function invalidKeyData() {
@@ -120,6 +121,7 @@ class SimpleTest extends \PHPUnit_Framework_TestCase
     public function testDifferentIvGeneratedOnEachRun() {
         $iv = $this->_instance->generateIv();
         $secondIv = $this->_instance->generateIv();
-        $this->assertNotEquals($iv, $secondIv);
+
+        $this->assertNotSame($iv, $secondIv);
     }
 }
