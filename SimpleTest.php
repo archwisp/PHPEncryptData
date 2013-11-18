@@ -40,9 +40,9 @@ class SimpleTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-    /* This function encrypts the same string with randomized IVs and 
-    /* flips a single bit of the ciphertext 
-    */
+     * Encrypts the same string with randomized IVs and flips a single bit of
+     * the ciphertext.
+     */
     public function invalidCiphertextData() {
         $this->setUp();
         $invalidCiphertexts = array();
