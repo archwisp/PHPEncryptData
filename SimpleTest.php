@@ -99,7 +99,7 @@ class SimpleTest extends \PHPUnit_Framework_TestCase
      * @dataProvider invalidKeyData
      */
     public function testInvalidEncryptionKeyThrowsException($invalidKey) {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException('InvalidArgumentException', 'Encryption key must be');
         new Simple($invalidKey, $this->_macKey);
     }
     
@@ -107,12 +107,12 @@ class SimpleTest extends \PHPUnit_Framework_TestCase
      * @dataProvider invalidKeyData
      */
     public function testInvalidMacKeySizeThrowsException($invalidKey) {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException('InvalidArgumentException', 'MAC key must be');
         new Simple($this->_encryptionKey, $invalidKey);
     }
 
     public function testEncryptWithInvalidIvLengthThrowsException() {
-        $this->setExpectedException('InvalidArgumentException');
+        $this->setExpectedException('InvalidArgumentException', 'IV must be exactly');
 
         $this->_instance->encrypt('FooBar ', 'wrong-iv-length');
     }
