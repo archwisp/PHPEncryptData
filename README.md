@@ -83,9 +83,9 @@ have it installed.
 
 The cryptographic primitives & practices behind this library are:
 
-* 256-bit Rijndael block cipher (256-bit key AND block size; not AES compatible)
-* CBC block cipher mode
-* HMAC-SHA-256
+* 192-bit Rijndael block cipher (256-bit key and 192-bit block size; not AES compatible)
+* CFB block cipher mode
+* HMAC-SHA-256/128 (first 128 bits of output)
 * Encrypt-Then-MAC construction
 * Constant-time MAC comparison
 * Uses /dev/urandom as its PRNG

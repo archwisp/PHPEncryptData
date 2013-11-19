@@ -15,18 +15,18 @@ class SimpleTest extends \PHPUnit_Framework_TestCase
         $this->_instance = new Simple($this->_encryptionKey, $this->_macKey);
     }
 
-    public function testCanEncryptPlaintext() {
-        $ciphertext = $this->_instance->encrypt('FooBar ', 'lAuCU7ft5tnHPKWRjF1IKV4J6V9/eCGQIisHZfuqMtY=');
+    public function testEncryptWithKnownIV() {
+        $ciphertext = $this->_instance->encrypt('FooBar ', 'LQX9lyuvAf8N2yB0Xnv9O12Cv+d7MVpq');
 
         $this->assertSame(
-            'cmpkLTI1Ni1obWFjLXNoYTI1NnxsQXVDVTdmdDV0bkhQS1dSakYxSUtWNEo2VjkvZUNHUUlpc0haZnVxTXRhLzNnSmc3SWhIZ3h2YVVZNmlzUnlQY1JxK3gvclFmblB4WS9BMVhxWTJuQT09fDZNQkJDS0JiWWMrYVdMcG5rMU1RVlcyak01Sm56NW9IZlhuRHJpeUlMOVE9',
+            'MHxMUVg5bHl1dkFmOE4yeUIwWG52OU8xMkN2K2Q3TVZwcWw5MDVDS3YyZHc9PXw4MzcwZmc3dzkvUTA2WTY3bkJQQ09RPT0=',
             $ciphertext
         );
     }
 
-    public function testCanDecryptCiphertext() {
+    public function testDecryptKnownCiphertext() {
         $plaintext = $this->_instance->decrypt(
-            'cmpkLTI1Ni1obWFjLXNoYTI1NnxsQXVDVTdmdDV0bkhQS1dSakYxSUtWNEo2VjkvZUNHUUlpc0haZnVxTXRhLzNnSmc3SWhIZ3h2YVVZNmlzUnlQY1JxK3gvclFmblB4WS9BMVhxWTJuQT09fDZNQkJDS0JiWWMrYVdMcG5rMU1RVlcyak01Sm56NW9IZlhuRHJpeUlMOVE9'
+            'MHxMUVg5bHl1dkFmOE4yeUIwWG52OU8xMkN2K2Q3TVZwcWw5MDVDS3YyZHc9PXw4MzcwZmc3dzkvUTA2WTY3bkJQQ09RPT0='
         );
 
         $this->assertSame('FooBar ', $plaintext);
@@ -34,9 +34,9 @@ class SimpleTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \RunTimeException
-     * @expectedExceptionMessage Unknown construction, "rjd-256-hmac-sha256/128"
+     * @expectedExceptionMessage Unknown construction
      */
-    public function testDecryptingSignedCiphertextWithUnknownConstructionThrowsException() {
+    public function testUnknownConstructionThrowsException() {
         $this->_instance->decrypt(
             'cmpkLTI1Ni1obWFjLXNoYTI1Ni8xMjh8bEF1Q1U3ZnQ1dG5IUEtXUmpGMUlLVjRKNlY5L2VDR1FJaXNIWmZ1cU10YS8zZ0pnN0loSGd4dmFVWTZpc1J5UGNScSt4L3JRZm5QeFkvQTFYcVkybkE9PXw2TUJCQ0tCYlljK2FXTHBuazFNUVZXMmpNNUpuejVvSGZYbkRyaXlJTDlRPQ=='
         );

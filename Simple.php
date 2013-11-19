@@ -17,14 +17,14 @@ namespace PHPCrypt;
 
 class Simple
 {
-    private $_encryptionAlgorithm = MCRYPT_RIJNDAEL_256;
-    private $_mode = MCRYPT_MODE_CBC;
+    private $_encryptionAlgorithm = MCRYPT_RIJNDAEL_192;
+    private $_mode = MCRYPT_MODE_CFB;
     private $_macAlgorithm = 'sha256';
-    private $_macByteCount = 32;
+    private $_macByteCount = 16;
     private $_encryptionKey;
     private $_macKey;
 
-    const RJD_256_HMAC_SHA256 = 'rjd-256-hmac-sha256';
+    const RJD192_CFB_HMAC_SHA256_128 = '0';
 
     public function __construct($encryptionKey, $macKey) {
         $this->_encryptionKey = base64_decode($encryptionKey);
@@ -58,16 +58,15 @@ class Simple
             );
         }
 
-        $paddedPlaintext = $this->_padWithPkcs7($plaintext);
-
         $ciphertext = $decodedIv . mcrypt_encrypt($this->_encryptionAlgorithm,
-            $this->_encryptionKey, $paddedPlaintext, $this->_mode, $decodedIv
+            $this->_encryptionKey, $plaintext, $this->_mode, $decodedIv
         );
 
         $signature = hash_hmac($this->_macAlgorithm, $ciphertext, $this->_macKey, true);
+        $signature = substr($signature, 0, $this->_macByteCount);
 
         return base64_encode(
-            self::RJD_256_HMAC_SHA256 . '|' . base64_encode($ciphertext) . '|' . base64_encode($signature)
+            self::RJD192_CFB_HMAC_SHA256_128 . '|' . base64_encode($ciphertext) . '|' . base64_encode($signature)
         );
     }
 
@@ -79,8 +78,8 @@ class Simple
             throw new \RuntimeException('Invalid encoding');
         }
 
-        if ($signedCiphertextParts[0] !== self::RJD_256_HMAC_SHA256) {
-            throw new \RunTimeException(sprintf('Unknown construction, "%s"', $signedCiphertextParts[0]));
+        if ($signedCiphertextParts[0] !== self::RJD192_CFB_HMAC_SHA256_128) {
+            throw new \RunTimeException(sprintf('Unknown construction', $signedCiphertextParts[0]));
         }
 
         $decodedCiphertext = base64_decode($signedCiphertextParts[1]);
@@ -94,10 +93,10 @@ class Simple
         $iv = substr($decodedCiphertext, 0, $this->_getBlockSize());
         $ciphertext = substr($decodedCiphertext, $this->_getBlockSize());
 
-        $paddedPlaintext = mcrypt_decrypt($this->_encryptionAlgorithm,
+        $plaintext = mcrypt_decrypt($this->_encryptionAlgorithm,
             $this->_encryptionKey, $ciphertext, $this->_mode, $iv);
 
-        return $this->_trimPkcs7($paddedPlaintext);
+        return $plaintext;
     }
 
     public function generateIv() {
