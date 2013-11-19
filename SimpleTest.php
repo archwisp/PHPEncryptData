@@ -4,42 +4,65 @@ namespace PHPCrypt;
 
 class SimpleTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var Simple
+     */
     private $_instance;
     private $_encryptionKey = 'nXA5gXtlOgHgxl6EZTfkfDmIzWaRqxZ1rq7DRNCIQ/Q=';
     private $_macKey = 'K9iPmOMowXUvcQTd7ehfcxvvHd4OtzyztQp+wuQwb6U=';
 
     public function setUp() {
-        $this->_instance = new \PHPCrypt\Simple($this->_encryptionKey, $this->_macKey);
+        $this->_instance = new Simple($this->_encryptionKey, $this->_macKey);
     }
 
-    public function testEncrypt() {
+    public function testCanEncryptPlaintext() {
         $ciphertext = $this->_instance->encrypt('FooBar ', 'lAuCU7ft5tnHPKWRjF1IKV4J6V9/eCGQIisHZfuqMtY=');
-        
-        $this->assertEquals(
+
+        $this->assertSame(
             'cmpkLTI1Ni1obWFjLXNoYTI1NnxsQXVDVTdmdDV0bkhQS1dSakYxSUtWNEo2VjkvZUNHUUlpc0haZnVxTXRhLzNnSmc3SWhIZ3h2YVVZNmlzUnlQY1JxK3gvclFmblB4WS9BMVhxWTJuQT09fDZNQkJDS0JiWWMrYVdMcG5rMU1RVlcyak01Sm56NW9IZlhuRHJpeUlMOVE9',
             $ciphertext
         );
     }
-    
-    public function testDecrypt() {
+
+    public function testCanDecryptCiphertext() {
         $plaintext = $this->_instance->decrypt(
             'cmpkLTI1Ni1obWFjLXNoYTI1NnxsQXVDVTdmdDV0bkhQS1dSakYxSUtWNEo2VjkvZUNHUUlpc0haZnVxTXRhLzNnSmc3SWhIZ3h2YVVZNmlzUnlQY1JxK3gvclFmblB4WS9BMVhxWTJuQT09fDZNQkJDS0JiWWMrYVdMcG5rMU1RVlcyak01Sm56NW9IZlhuRHJpeUlMOVE9'
         );
-        
-        $this->assertEquals('FooBar ', $plaintext);
+
+        $this->assertSame('FooBar ', $plaintext);
     }
-    
-    public function testDecryptUnknownConstruction() {
-        $this->setExpectedException('Exception', 'Unknown construction, "rjd-256-hmac-sha256/128"');
-        $plaintext = $this->_instance->decrypt(
+
+    /**
+     * @expectedException \RunTimeException
+     * @expectedExceptionMessage Unknown construction, "rjd-256-hmac-sha256/128"
+     */
+    public function testDecryptingSignedCiphertextWithUnknownConstructionThrowsException() {
+        $this->_instance->decrypt(
             'cmpkLTI1Ni1obWFjLXNoYTI1Ni8xMjh8bEF1Q1U3ZnQ1dG5IUEtXUmpGMUlLVjRKNlY5L2VDR1FJaXNIWmZ1cU10YS8zZ0pnN0loSGd4dmFVWTZpc1J5UGNScSt4L3JRZm5QeFkvQTFYcVkybkE9PXw2TUJCQ0tCYlljK2FXTHBuazFNUVZXMmpNNUpuejVvSGZYbkRyaXlJTDlRPQ=='
         );
     }
 
+    public function invalidCiphertextPartsData()
+    {
+        return array(
+            'Too few parts' => array('cGFydDF8cGFydDI='), // 'part1|part2'
+            'Too many parts' => array('cGFydDF8cGFydDJ8cGFydDN8cGFydDQ='), // 'part1|part2|part3|part4'
+        );
+    }
+
     /**
-    /* This function encrypts the same string with randomized IVs and 
-    /* flips a single bit of the ciphertext 
-    */
+     * @dataProvider invalidCiphertextPartsData
+     * @expectedException \RuntimeException
+     * @expectedExceptionMessage Invalid encoding
+     */
+    public function testDecryptingCiphertextWithWrongNumberOfPartsThrowsException($ciphertext) {
+        $this->_instance->decrypt($ciphertext);
+    }
+
+    /**
+     * Encrypts the same string with randomized IVs and flips a single bit of
+     * the ciphertext.
+     */
     public function invalidCiphertextData() {
         $this->setUp();
         $invalidCiphertexts = array();
@@ -51,7 +74,7 @@ class SimpleTest extends \PHPUnit_Framework_TestCase
             $ciphertext = base64_decode($encodedCiphertext);
             $randomByte = rand(1, strlen($ciphertext));
             $mask = str_repeat("\x00", $randomByte -1) . "\x01" . str_repeat("\x00", strlen($ciphertext) - $randomByte);
-            
+
             // SANITY CHECK: If this mask is removed, this test should fail every 
             // single run because the ciphertext should match.
             $invalidCiphertext = $ciphertext ^ $mask;
@@ -59,7 +82,7 @@ class SimpleTest extends \PHPUnit_Framework_TestCase
             // printf("Ciphertext:         %s\n", bin2hex($ciphertext));
             // printf("Mask:               %s\n", bin2hex($mask));
             // printf("Invalid Ciphertext: %s\n", bin2hex($invalidCiphertext));
-            
+
             $encodedInvalidCiphertext = base64_encode($invalidCiphertext);
             $invalidCiphertexts[] = array(base64_encode($construction . '|' . $encodedInvalidCiphertext . '|' . $encodedSignature));
         }
@@ -69,16 +92,18 @@ class SimpleTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider invalidCiphertextData
+     * @expectedException \RuntimeException
+     * @expectedExceptionMessage Invalid signature
      */
-    public function testDecryptInvalidCiphertext($signedCiphertext) { 
-        $this->setExpectedException('Exception', 'Invalid signature');
-        $plaintext = $this->_instance->decrypt($signedCiphertext);
+    public function testDecryptingInvalidCiphertextThrowsException($signedCiphertext) {
+        $this->_instance->decrypt($signedCiphertext);
     }
-    
-    public function testEncryptAndDecrypt() {
+
+    public function testEncryptedDataCanBeDecrypted() {
         $plaintext = 'Something';
         $ciphertext = $this->_instance->encrypt('Something');
-        $this->assertEquals($plaintext, $this->_instance->decrypt($ciphertext));
+
+        $this->assertSame($plaintext, $this->_instance->decrypt($ciphertext));
     }
 
     public function invalidKeyData() {
@@ -94,32 +119,39 @@ class SimpleTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider invalidKeyData
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Encryption key must be
      */
-    public function testEncryptInvalidEncryptionKeySize($invalidKey) {
-        $this->setExpectedException('Exception');
-        $instance = new \PHPCrypt\Simple($invalidKey, $this->_macKey);
+    public function testInvalidEncryptionKeyThrowsException($invalidKey) {
+        new Simple($invalidKey, $this->_macKey);
     }
-    
+
     /**
      * @dataProvider invalidKeyData
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage MAC key must be
      */
-    public function testEncryptInvalidMacKeySize($invalidKey) {
-        $this->setExpectedException('Exception');
-        $instance = new \PHPCrypt\Simple($this->_encryptionKey, $invalidKey);
+    public function testInvalidMacKeySizeThrowsException($invalidKey) {
+        new Simple($this->_encryptionKey, $invalidKey);
     }
 
-    public function testEncryptInvalidIvLength() {
-        $this->setExpectedException('Exception');
-
-        $ciphertext = $this->_instance->encrypt(
-            'FooBar ', $this->_encryptionKey, $this->macKey, 'Short IV');
-
-        $this->assertEquals('This should never execute', base64_encode($ciphertext));
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage IV must be exactly
+     */
+    public function testEncryptWithInvalidIvLengthThrowsException() {
+        $this->_instance->encrypt('FooBar ', 'wrong-iv-length');
     }
 
-    public function testGenerateIv() {
-        $iv = $this->_instance->generateIv();
-        $secondIv = $this->_instance->generateIv();
-        $this->assertNotEquals($iv, $secondIv);
+    public function testDifferentIvGeneratedOnEachRun() {
+        $expected = 20;
+        $ivs = array();
+        for ($i = 1; $i <= $expected; $i++) {
+            $ivs[] = $this->_instance->generateIv();
+        }
+
+        $duplicatesRemoved = array_values($ivs);
+
+        $this->assertCount($expected, $duplicatesRemoved);
     }
 }
