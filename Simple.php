@@ -111,29 +111,6 @@ class Simple
         return mcrypt_get_key_size($this->_encryptionAlgorithm, $this->_mode);
     }
 
-    private function _padWithPkcs7($plaintext) {
-        $blockSize = $this->_getBlockSize();
-
-        if ($blockSize > 255) {
-            throw new \RuntimeException('PKCS7 padding is only well defined for block sizes smaller than 256 bits');
-        }
-
-        $padLength = ($blockSize - (strlen($plaintext) % $blockSize));
-
-        return $plaintext . str_repeat(chr($padLength), $padLength);
-    }
-
-    private function _trimPkcs7($plaintext) {
-        $padChar = substr($plaintext, -1);
-        $padLength = ord($padChar);
-
-        if (substr($plaintext, -$padLength) !== str_repeat($padChar, $padLength)) {
-            throw new \RuntimeException('Invalid pad value');
-        }
-
-        return substr($plaintext, 0, -$padLength);
-    }
-
     /**
      * Constant-time comparison function
      *
