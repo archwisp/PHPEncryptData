@@ -32,6 +32,8 @@ Install via Composer:
 
         require __DIR__ . '/vendor/autoload.php';
 
+        // These keys won't actually work... on purpose. Create your OWN!
+        
         $phpcrypt = new \PHPCrypt\Simple(
                 '6zp4y5vnUQpfEroWI6dMq5lC46F5Dmqa4NDcM1W42k='
                 'RJikKksPg3UmqgQPXBwCmcSOMHQn0iOtQAFcfcQOTU='
