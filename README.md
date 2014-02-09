@@ -19,12 +19,12 @@ Install via Composer:
 1. Generate your encryption key:
 
         $ head -c 32 /dev/urandom | base64
-        6zp4y5vnUQpfEroWI6dMq5lC46F5Dmqa4NDcM1W4u2k=
+        6zp4y5vnUQpfEroWI6dMq5lC46F5Dmqa4NDcM1W42k=
 
 2. Generate your MAC key:
 
         $ head -c 32 /dev/urandom | base64
-        RJikKksPg3UmqgQPXBwCmcSOMHQn0iOtQAFcfRcQOTU=
+        RJikKksPg3UmqgQPXBwCmcSOMHQn0iOtQAFcfcQOTU=
 
 3. Write your code:
 
@@ -33,8 +33,8 @@ Install via Composer:
         require __DIR__ . '/vendor/autoload.php';
 
         $phpcrypt = new \PHPCrypt\Simple(
-                '6zp4y5vnUQpfEroWI6dMq5lC46F5Dmqa4NDcM1W4u2k='
-                'RJikKksPg3UmqgQPXBwCmcSOMHQn0iOtQAFcfRcQOTU='
+                '6zp4y5vnUQpfEroWI6dMq5lC46F5Dmqa4NDcM1W42k='
+                'RJikKksPg3UmqgQPXBwCmcSOMHQn0iOtQAFcfcQOTU='
         );
 
         $ciphertext = $phpcrypt->encrypt('Foobar');
@@ -101,17 +101,17 @@ generate an encryption key with the following command:
 
         head -c 32 /dev/urandom | base64
 
-    The output will look something like (Don't use this sample key!):
+    The output will look something like (Don't use this sample key!... it won't work anyway):
         
-        6zp4y5vnUQpfEroWI6dMq5lC46F5Dmqa4NDcM1W4u2k=
+        6zp4y5vnUQpfEroWI6dMq5lC46F5Dmqa4NDM1W42k=
 
 2. Run the command a second time to generate your MAC key:
 
         head -c 32 /dev/urandom | base64
 
-    Again, the output will again look like this (Ensure that it is unique.):
+    Again, the output will again look like this (Ensure that it is not the same as the encryption key.):
 
-        RJikKksPg3UmqgQPXBwCmcSOMHQn0iOtQAFcfRcQOTU=
+        RJikKksPg3UmqgQPXBwCmcSOMHQn0iOtQAFccQOTU=
 
 3. Given the above inputs, add the following code to your bootstrap:
 
@@ -120,8 +120,8 @@ generate an encryption key with the following command:
         require __DIR__ . '/vendor/autoload.php';
 
         $phpcrypt = new \PHPCrypt\Simple(
-            '6zp4y5vnUQpfEroWI6dMq5lC46F5Dmqa4NDcM1W4u2k=',
-            'RJikKksPg3UmqgQPXBwCmcSOMHQn0iOtQAFcfRcQOTU='
+            '6zp4y5vnUQpfEroWI6dMq5lC46F5Dmqa4NM1W4u2k=',
+            'RJikKksPg3UmqgQPXBwCmcSOMHQn0iOtFcfRcQOTU='
         );
 
 4. Call the encrypt() function:
@@ -130,7 +130,7 @@ generate an encryption key with the following command:
 
     This will generate output similar to this:  
 
-        cmpkLTI1Ni1obWFjLXNoYTI1NnwwalJISnBmdndCVkwxb3l2ckNSbkdoamNzd3h2ZWJCZlB5TDk5Vy90dDJWM2VmZzAyUVgzL0M4elMyR1BjVkxCME1PZnFiaDBONU5nekVxNmRpMjM5UT09fGdaZDNHUXFHc2NhQTZTdVlTQTkvTDNyRG4xV2xuaWhrNys4OTU4K0RJSFk9
+        MHxjcUhrSnR5cUlnc2RLbmxGRkJFRUtZMmUyQkdvM01pVnlaRk5XM2VjfEJyc0FFaEhUZGs1T3A4VElFUFJLUXc9PQ==
 
     As you can see, the output is base64 encoded for you and the MAC is
     appended automatically, so you don't have to worry about any of the
@@ -146,7 +146,7 @@ generate an encryption key with the following command:
 5. Call the decrypt() function:
 
         $ciphertext = $phpcrypt->decrypt(
-            'cmpkLTI1Ni1obWFjLXNoYTI1NnwwalJISnBmdndCVkwxb3l2ckNSbkdoamNzd3h2ZWJCZlB5TDk5Vy90dDJWM2VmZzAyUVgzL0M4elMyR1BjVkxCME1PZnFiaDBONU5nekVxNmRpMjM5UT09fGdaZDNHUXFHc2NhQTZTdVlTQTkvTDNyRG4xV2xuaWhrNys4OTU4K0RJSFk9'
+            'MHxjcUhrSnR5cUlnc2RLbmxGRkJFRUtZMmUyQkdvM01pVnlaRk5XM2VjfEJyc0FFaEhUZGs1T3A4VElFUFJLUXc9PQ=='
         );
 
     This will produce the value:
