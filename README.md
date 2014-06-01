@@ -1,6 +1,6 @@
 # \PHPEncryptData\ - Simple Data Encryption Library For PHP 5.3+
 
-[![Coverage Status](https://img.shields.io/coveralls/archwisp/PHPEncryptData.svg)](https://coveralls.io/r/archwisp/PHPEncryptData)
+[![Build Status](https://travis-ci.org/archwisp/PHPEncryptData.svg?branch=master)](https://travis-ci.org/archwisp/PHPEncryptData) [![Coverage Status](https://img.shields.io/coveralls/archwisp/PHPEncryptData.svg)](https://coveralls.io/r/archwisp/PHPEncryptData)
 
 If you are looking for the answer to the question, "How do I encrypt
 sensitive data in PHP?", you are in the correct place. Read through
