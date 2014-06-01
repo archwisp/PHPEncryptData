@@ -6,6 +6,7 @@ php:
   - 5.5
 
 before_script:
+  - wget http://getcomposer.org/composer.phar
   - composer install --prefer-dist --dev
 
 script:
