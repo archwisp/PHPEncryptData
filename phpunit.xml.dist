@@ -3,7 +3,7 @@
     <logging />
     <testsuites>
         <testsuite name="All">
-            <file>./SimpleTest.php</file>
+            <file>./tests/SimpleTest.php</file>
         </testsuite>
     </testsuites>
 </phpunit>

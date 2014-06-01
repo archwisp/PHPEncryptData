@@ -9,7 +9,8 @@
         }
     ],
     "autoload": {
-        "classmap": [""]
+        "classmap": [""],
+        "psr-0": {"": "src/"}
     },
     "require": {
         "ext-mcrypt": "*"
