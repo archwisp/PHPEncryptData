@@ -1,4 +1,4 @@
-# \PHPCrypt\ - Simple Encryption Library For PHP 5.3+
+# \PHPEncryptData\ - Simple Data Encryption Library For PHP 5.3+
 
 If you are looking for the answer to the question, "How do I encrypt
 sensitive data in PHP?", you are in the correct place. Read through
@@ -10,9 +10,9 @@ code, and you will have secure encryption.
 Install via Composer:
 
 1. [Download Composer](http://getcomposer.org/download/) using your preferred method.
-2. Add PHPCrypt to your project:
+2. Add PHPEncryptData to your project:
 
-        $ php composer.phar require archwisp/php-crypt
+        $ php composer.phar require archwisp/php-encrypt-data
 
 ## Basic Usage
 
@@ -34,7 +34,7 @@ Install via Composer:
 
         // These keys won't actually work... on purpose. Create your OWN!
         
-        $phpcrypt = new \PHPCrypt\Simple(
+        $phpcrypt = new \PHPEncryptData\Simple(
                 '6zp4y5vnUQpfEroWI6dMq5lC46F5Dmqa4NDcM1W42k='
                 'RJikKksPg3UmqgQPXBwCmcSOMHQn0iOtQAFcfcQOTU='
         );
@@ -121,7 +121,7 @@ generate an encryption key with the following command:
 
         require __DIR__ . '/vendor/autoload.php';
 
-        $phpcrypt = new \PHPCrypt\Simple(
+        $phpcrypt = new \PHPEncryptData\Simple(
             '6zp4y5vnUQpfEroWI6dMq5lC46F5Dmqa4NM1W4u2k=',
             'RJikKksPg3UmqgQPXBwCmcSOMHQn0iOtFcfRcQOTU='
         );
@@ -159,7 +159,7 @@ generate an encryption key with the following command:
 
 1. [Download Composer](http://getcomposer.org/download/) using your preferred method.
 
-2. From the PHPCrypt directory, install the project dependencies:
+2. From the PHPEncryptData directory, install the project dependencies:
 
         $ php composer.phar install
 

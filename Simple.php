@@ -1,19 +1,19 @@
 <?php // vim:ts=4:sts=4:sw=4:et:
 
 /**
- * Simple Encryption Library For PHP 5.3+
+ * Simple Data Encryption Library For PHP 5.3+
  *
  * PHP Version 5.3
  *
  * @category  PHP
- * @package   PHPCrypt
+ * @package   PHPEncryptData
  * @author    Bryan C. Geraghty <bryan@ravensight.org>
  * @copyright 2013 Bryan C. Geraghty
- * @license   https://github.com/archwisp/PHPCrypt/blob/master/LICENSE MIT
- * @link      https://github.com/archwisp/PHPCrypt
+ * @license   https://github.com/archwisp/PHPEncryptData/blob/master/LICENSE MIT
+ * @link      https://github.com/archwisp/PHPEncryptData
  */
 
-namespace PHPCrypt;
+namespace PHPEncryptData;
 
 class Simple
 {

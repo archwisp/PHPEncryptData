@@ -1,6 +1,6 @@
 {
-    "name": "archwisp/php-crypt",
-    "description": "Simple Encryption Library For PHP 5.3+",
+    "name": "archwisp/php-encrypt-data",
+    "description": "Simple Data Encryption Library For PHP 5.3+",
     "license": "MIT",
     "authors": [
         {

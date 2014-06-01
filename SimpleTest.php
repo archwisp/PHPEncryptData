@@ -1,6 +1,6 @@
 <?php // vim:ts=4:sts=4:sw=4:et:
 
-namespace PHPCrypt;
+namespace PHPEncryptData;
 
 class SimpleTest extends \PHPUnit_Framework_TestCase
 {
