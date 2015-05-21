@@ -35,11 +35,10 @@ Install via Composer:
         require __DIR__ . '/vendor/autoload.php';
 
         // These keys won't actually work... on purpose. Create your OWN!
+        $encryptionKey = '6zp4y5vnUQpfEroWI6dMq5lC46F5Dmqa4NDcM1W42k=';
+        $macKey = 'RJikKksPg3UmqgQPXBwCmcSOMHQn0iOtQAFcfcQOTU=';
         
-        $phpcrypt = new \PHPEncryptData\Simple(
-                '6zp4y5vnUQpfEroWI6dMq5lC46F5Dmqa4NDcM1W42k='
-                'RJikKksPg3UmqgQPXBwCmcSOMHQn0iOtQAFcfcQOTU='
-        );
+        $phpcrypt = new \PHPEncryptData\Simple($encryptionKey, $macKey);
 
         $ciphertext = $phpcrypt->encrypt('Foobar');
         printf("Ciphertext: %s\n", $ciphertext);
@@ -123,10 +122,10 @@ generate an encryption key with the following command:
 
         require __DIR__ . '/vendor/autoload.php';
 
-        $phpcrypt = new \PHPEncryptData\Simple(
-            '6zp4y5vnUQpfEroWI6dMq5lC46F5Dmqa4NM1W4u2k=',
-            'RJikKksPg3UmqgQPXBwCmcSOMHQn0iOtFcfRcQOTU='
-        );
+        $encryptionKey = '6zp4y5vnUQpfEroWI6dMq5lC46F5Dmqa4NDcM1W42k=';
+        $macKey = 'RJikKksPg3UmqgQPXBwCmcSOMHQn0iOtQAFcfcQOTU=';
+        
+        $phpcrypt = new \PHPEncryptData\Simple($encryptionKey, $macKey);
 
 4. Call the encrypt() function:
 
