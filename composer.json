@@ -9,7 +9,7 @@
         }
     ],
     "autoload": {
-        "psr-0": {"": "src/"}
+        "psr-4": {"PHPEncryptData\\": "src"}
     },
     "require": {
         "ext-mcrypt": "*"
