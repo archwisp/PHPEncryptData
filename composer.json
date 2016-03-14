@@ -9,7 +9,6 @@
         }
     ],
     "autoload": {
-        "classmap": [""],
         "psr-0": {"": "src/"}
     },
     "require": {
